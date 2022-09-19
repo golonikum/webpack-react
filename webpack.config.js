@@ -44,7 +44,7 @@ module.exports = {
       },
       {
         test: GLOBAL_CSS_REGEXP,
-        use: ["style-loader", "css-loader", "less-loader"],
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
