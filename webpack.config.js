@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const NODE_ENV = process.env.NODE_ENV;
 const IS_DEV = NODE_ENV === "development";
+const GLOBAL_CSS_REGEXP = /\.global\.css$/;
 
 function setupDevtool() {
   return IS_DEV ? "eval" : false;
@@ -13,7 +14,7 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
   },
-  entry: path.resolve(__dirname, "src/index.jsx"),
+  entry: path.resolve(__dirname, "src/index.tsx"),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index.js",
@@ -27,18 +28,23 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          "style-loader", 
+          "style-loader",
           {
             loader: "css-loader",
             options: {
               modules: {
-                mode: 'local',
-                localIdentName: '[name]__[local]--[hash:base64:5]'
+                mode: "local",
+                localIdentName: "[name]__[local]--[hash:base64:5]",
               },
             },
           },
-          'less-loader'
+          "less-loader",
         ],
+        exclude: GLOBAL_CSS_REGEXP,
+      },
+      {
+        test: GLOBAL_CSS_REGEXP,
+        use: ["style-loader", "css-loader", "less-loader"],
       },
     ],
   },
